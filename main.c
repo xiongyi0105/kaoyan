@@ -58,12 +58,30 @@ BSTNode *BSTSearch(BST bst, int data) {
     return bst;
 }
 
+BSTNode *BSTRecursiveSearch(BST bst,int data){
+    // 递归查找
+    if(bst==NULL){
+        return bst;
+    }
+    if(bst->data == data){
+        return bst;
+    }
+    else if(bst->data < data){
+        return BSTRecursiveSearch(bst->r_child,data);
+    }
+    else{
+        return BSTRecursiveSearch(bst->l_child,data);
+    }
+}
+
+
 int main(int argc, char const *argv[]) {
     int n = 5;
     int data[] = {4, 7, 6, 5, 10};
     BST *bst_root_pointer = (BST *) malloc(sizeof(BST *));
     CreateBST(bst_root_pointer, data, n);
-    BSTNode *found_bst = BSTSearch(*bst_root_pointer, 121);
+    // BSTNode *found_bst = BSTSearch(*bst_root_pointer, 121);
+    BSTNode *found_bst = BSTRecursiveSearch(*bst_root_pointer, 6);
     if (found_bst) {
         printf("%d", found_bst->data);
 
