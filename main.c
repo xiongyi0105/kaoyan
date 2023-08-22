@@ -13,6 +13,10 @@ void CreateBST(BST *, int[], int);
 
 BSTNode *BSTSearch(BST, int);
 
+BSTNode *BSTRecursiveSearch(BST, int);
+
+void BSTInOrder(BST);
+
 
 int BSTInsert(BST *bst_pointer, int d) {
     // 出口
@@ -58,36 +62,65 @@ BSTNode *BSTSearch(BST bst, int data) {
     return bst;
 }
 
-BSTNode *BSTRecursiveSearch(BST bst,int data){
+BSTNode *BSTRecursiveSearch(BST bst, int data) {
     // 递归查找
-    if(bst==NULL){
+    if (bst == NULL) {
         return bst;
     }
-    if(bst->data == data){
+    if (bst->data == data) {
         return bst;
+    } else if (bst->data < data) {
+        return BSTRecursiveSearch(bst->r_child, data);
+    } else {
+        return BSTRecursiveSearch(bst->l_child, data);
     }
-    else if(bst->data < data){
-        return BSTRecursiveSearch(bst->r_child,data);
+}
+
+void BSTInOrder(BST bst) {
+    // 二叉排序树的中序遍历，是从小到大输出的
+    if (bst != NULL) {
+        BSTInOrder(bst->l_child);
+        printf("%d\n", bst->data);
+        BSTInOrder(bst->r_child);
     }
-    else{
-        return BSTRecursiveSearch(bst->l_child,data);
+}
+
+int IsBST(BST bst, int low, int high) {
+    // 判断是否为二叉排序树，对每个节点递归比较大小，设置无限小和无限大两个游标。
+    if (bst == NULL) {
+        return 1;
     }
+    if (bst->data <= low && bst->data >= high) {
+        return 0;
+    }
+    int l = IsBST(bst->l_child, low, bst->data);
+    int r = IsBST(bst->r_child, bst->data, high);
+    return l && r;
 }
 
 
 int main(int argc, char const *argv[]) {
     int n = 5;
     int data[] = {4, 7, 6, 5, 10};
+
+    // 构造二叉排序树
     BST *bst_root_pointer = (BST *) malloc(sizeof(BST *));
     CreateBST(bst_root_pointer, data, n);
+
+    // 按值搜索二叉排序树
     // BSTNode *found_bst = BSTSearch(*bst_root_pointer, 121);
     BSTNode *found_bst = BSTRecursiveSearch(*bst_root_pointer, 6);
     if (found_bst) {
-        printf("%d", found_bst->data);
+        printf("%d\n", found_bst->data);
 
     } else {
-        printf("NULL");
+        printf("NULL\n");
     }
+
+    // 中序遍历，从小到大输出
+    BSTInOrder(*bst_root_pointer);
+    // 判断是否为二叉排序树
+    printf("%d",IsBST(*bst_root_pointer,INT_MIN,INT_MAX));
     return 0;
 }
 
