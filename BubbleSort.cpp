@@ -17,7 +17,7 @@ void BubbleSort(int A[], int n)
     for (i = 0; i < n - 1; i++)
     {
         bool flag = false;
-        for (j = n - 1; j > 0; j--)
+        for (j = n - 1; j > i; j--)
         {
             if (A[j - 1] > A[j])
             {
