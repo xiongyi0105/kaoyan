@@ -22,6 +22,7 @@ PLNode GetElem(LinkList, int);
 bool DeleteByHead(LinkList &, int &);
 bool ListInsert(LinkList &, int, int);
 bool InsertNextNode(LinkList &, PLNode, int);
+bool ListDelete(LinkList &, int, int &);
 
 int main(int argc, char const *argv[])
 {
@@ -33,6 +34,11 @@ int main(int argc, char const *argv[])
     ListInsert(L, 4, 300);
     PrintList(L);
     DeleteByHead(L, val);
+    PrintList(L);
+    ListDelete(L, 1, val);
+    ListDelete(L, 1, val);
+    ListDelete(L, 1, val);
+    ListDelete(L, 1, val);
     PrintList(L);
 }
 
@@ -129,6 +135,32 @@ bool InsertNextNode(LinkList &L, PLNode p, int val)
     {
         L.tail = s;
     }
+    return true;
+}
+
+bool ListDelete(LinkList &L, int i, int &val)
+{
+    if (IsEmpty(L))
+    {
+        return false;
+    }
+    PLNode p = GetElem(L, i - 1);
+    if (p == NULL)
+    {
+        return false;
+    }
+    PLNode s = p->next;
+    if (s == NULL)
+    {
+        return false;
+    }
+    val = s->data;
+    p->next = s->next;
+    if (p->next == NULL)
+    {
+        L.tail = p;
+    }
+    free(s);
     return true;
 }
 
