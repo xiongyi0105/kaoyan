@@ -20,10 +20,20 @@ void InsertFirstNode(LinkList &, int);
 void CreateListByHead(LinkList &);
 PLNode GetElem(LinkList, int);
 bool DeleteByHead(LinkList &, int &);
+bool ListInsert(LinkList &, int, int);
+bool InsertNextNode(LinkList &, PLNode, int);
 
 int main(int argc, char const *argv[])
 {
-    return 0;
+    LinkList L;
+    int val;
+    CreateListByHead(L);
+    PrintList(L);
+    ListInsert(L, 1, 200);
+    ListInsert(L, 4, 300);
+    PrintList(L);
+    DeleteByHead(L, val);
+    PrintList(L);
 }
 
 void InitList(LinkList &L)
@@ -39,7 +49,7 @@ bool IsEmpty(LinkList L)
 
 void PrintList(LinkList L)
 {
-    if (IsEmpty)
+    if (IsEmpty(L))
     {
         printf("Empty List");
     }
@@ -66,13 +76,13 @@ void CreateListByHead(LinkList &L)
 
 PLNode GetElem(LinkList L, int i)
 {
-    if (i < 1)
+    if (i < 0)
     {
         return NULL;
     }
     PLNode p;
-    int j = 1;
-    p = L.head->next;
+    int j = 0;
+    p = L.head;
     while (p != NULL && j < i)
     {
         p = p->next;
@@ -95,6 +105,31 @@ bool DeleteByHead(LinkList &L, int &val)
         L.tail = L.head;
     }
     free(p);
+    return true;
+}
+
+bool ListInsert(LinkList &L, int i, int val)
+{
+    PLNode p = GetElem(L, i - 1);
+    return InsertNextNode(L, p, val);
+}
+
+bool InsertNextNode(LinkList &L, PLNode p, int val)
+{
+    if (p == NULL)
+    {
+        return false;
+    }
+    PLNode s;
+    s = (PLNode)malloc(sizeof(LNode));
+    s->data = val;
+    s->next = p->next;
+    p->next = s;
+    if (s->next == NULL)
+    {
+        L.tail = s;
+    }
+    return true;
 }
 
 void InsertFirstNode(LinkList &L, int val)
